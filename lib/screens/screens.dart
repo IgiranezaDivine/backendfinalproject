@@ -1,2 +1,9 @@
 export 'login-screen.dart';
 export 'forgot-Password.dart';
+export 'create-new-account.dart';
+export 'home-screen.dart';
+export 'splash-screen.dart';
+export 'userDetails.dart';
+export 'edit-user.dart';
+export 'detect-person.dart';
+export 'register-user.dart';

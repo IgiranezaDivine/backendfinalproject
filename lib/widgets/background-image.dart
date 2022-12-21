@@ -1,3 +1,4 @@
+// ignore: file_names
 import 'package:flutter/material.dart';
 class BackgroundImage extends StatelessWidget {
   const BackgroundImage({
@@ -9,7 +10,7 @@ class BackgroundImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ShaderMask(
-      shaderCallback: (rect) => LinearGradient(
+      shaderCallback: (rect) => const LinearGradient(
         begin: Alignment.bottomCenter,
         end: Alignment.center,
         colors: [Colors.black, Colors.transparent],
@@ -20,7 +21,7 @@ class BackgroundImage extends StatelessWidget {
           image: DecorationImage(
               image: AssetImage(image),
               fit: BoxFit.cover,
-              colorFilter: ColorFilter.mode(Colors.black54, BlendMode.darken)),
+              colorFilter: const ColorFilter.mode(Colors.black54, BlendMode.darken)),
         ),
       ),
     );

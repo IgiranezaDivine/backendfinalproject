@@ -4,24 +4,26 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '/widgets/widgets.dart';
 
 class LoginScreen extends StatelessWidget {
+  const LoginScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        BackgroundImage(
+        const BackgroundImage(
           image: 'assets/images/login1.jpg',
         ),
         Scaffold(
           backgroundColor: Colors.transparent,
           body: Column(
             children: [
-              Flexible(
-                child: Center(
+              const Flexible(
+                child:  Center(
                   child: Text(
                     'Missing Person',
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: 60,
+                        fontSize: 55,
                         fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -29,13 +31,13 @@ class LoginScreen extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  TextInputField(
+                  const TextInputField(
                     icon: FontAwesomeIcons.envelope,
                     hint: 'Email',
                     inputType: TextInputType.emailAddress,
                     inputAction: TextInputAction.next,
                   ),
-                  PasswordInput(
+                  const PasswordInput(
                     icon: FontAwesomeIcons.lock,
                     hint: 'Password',
                     inputType: TextInputType.emailAddress,
@@ -43,32 +45,37 @@ class LoginScreen extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () => Navigator.pushNamed(context, 'ForgotPassword'),
+                    // ignore: prefer_const_constructors
                     child: Text(
                       'Forget Password',
                       style: kBodyText,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 25,
                   ),
-                  RoundedButton(
+                  const RoundedButton(
                     buttonName: 'Login',
                   ),
-                  SizedBox(
+                 const SizedBox(
                     height: 25,
                   ),
                 ],
               ),
-              Container(
-                child: Text(
-                  'Create New Account',
-                  style: kBodyText,
+              GestureDetector(
+                onTap: () => Navigator.pushNamed(context,
+               'CreateNewAccount'),
+                child: Container(
+                  child:  Text(
+                    'Create New Account',
+                    style: kBodyText,
+                  ),
+                  decoration: const BoxDecoration(
+                      border:
+                          Border(bottom: BorderSide(width: 1, color: kWhite))),
                 ),
-                decoration: BoxDecoration(
-                    border:
-                        Border(bottom: BorderSide(width: 1, color: kWhite))),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
             ],

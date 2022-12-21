@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:quickalert/quickalert.dart';
 import 'screens/screens.dart';
 
 void main() {
@@ -13,6 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Missing Person',
       theme: ThemeData(
         textTheme: GoogleFonts.josefinSansTextTheme(Theme.of(context).textTheme),
@@ -20,8 +22,15 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/':(context) => LoginScreen(),
-        'ForgotPassword':(context) => ForgotPassword(),
+        // '/':(context) => const Splash(),
+        // 'ForgotPassword':(context) => const ForgotPassword(),
+        // 'CreateNewAccount':(context) => const CreateNewAccount(),
+      '/':(context) => const HomeScreen(),
+       // '/':(context) => const UserDetails(),
+      // '/':(context) => const EditUser(),
+      // '/':(context) => const DetectUser(),
+       // '/':(context) => const RegisterUser(),
+       
       },
     );
   }

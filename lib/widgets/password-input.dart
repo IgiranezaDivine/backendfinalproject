@@ -4,15 +4,15 @@ class PasswordInput extends StatelessWidget {
   const PasswordInput({
     Key? key,
     required this.icon,
-    required this.hint,
-    required this.inputType,
-    required this.inputAction,
+    required this.hint ,
+    this.inputType,
+    this.inputAction,
   }) : super(key: key);
 
   final IconData icon;
   final String hint;
-  final TextInputType inputType;
-  final TextInputAction inputAction;
+ final TextInputType? inputType ;
+final TextInputAction? inputAction;  
 
   @override
   Widget build(BuildContext context) {
