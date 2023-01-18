@@ -2,13 +2,65 @@
 import 'dart:ui';
 import 'package:backendfinalproject/pallete.dart';
 import 'package:backendfinalproject/widgets/widgets.dart';
-
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class CreateNewAccount extends StatelessWidget {
+Future<Albumm> createAccount(
+    String name, String email, String password, String comfirmPassword) async {
+  final response = await http.post(
+    Uri.parse('http://localhost:6000/api/auth'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      'name': name,
+      'email': email,
+      'password': password,
+      'comfirmPassword': comfirmPassword
+    }),
+  );
+  if (response.statusCode == 201) {
+    // If the server did return a 201 CREATED response,
+    // then parse the JSON.
+    print(response.body);
+    return Albumm.fromJson(jsonDecode(response.body));
+  } else {
+    // If the server did not return a 201 CREATED response,
+    // then throw an exception.
+    throw Exception('Failed to create album.');
+  }
+}
+
+class Albumm {
+  final String name;
+  final String email;
+  final String password;
+
+  const Albumm(
+      {required this.name, required this.email, required this.password});
+
+  factory Albumm.fromJson(Map<String, dynamic> json) {
+    return Albumm(
+        name: json['name'], email: json['email'], password: json['password']);
+  }
+}
+
+class CreateNewAccount extends StatefulWidget {
   const CreateNewAccount({super.key});
+
+  @override
+  State<CreateNewAccount> createState() => _CreateNewAccountState();
+}
+
+class _CreateNewAccountState extends State<CreateNewAccount> {
+  Future<Albumm>? _createAccountAction;
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final comfirmPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -65,32 +117,47 @@ class CreateNewAccount extends StatelessWidget {
                 ),
                 Column(
                   children: [
-                    const TextInputField(
+                    TextInputField(
                       icon: FontAwesomeIcons.user,
                       hint: 'User',
                       inputType: TextInputType.name,
                       inputAction: TextInputAction.next,
+                      controller: nameController,
                     ),
-                    const TextInputField(
+                    TextInputField(
                       icon: FontAwesomeIcons.envelope,
                       hint: 'Email',
                       inputType: TextInputType.emailAddress,
                       inputAction: TextInputAction.next,
+                      controller: emailController,
                     ),
-                    const PasswordInput(
+                    PasswordInput(
                       icon: FontAwesomeIcons.lock,
                       hint: 'Password',
                       inputAction: TextInputAction.next,
+                      controller: passwordController,
                     ),
-                    const PasswordInput(
+                    PasswordInput(
                       icon: FontAwesomeIcons.lock,
                       hint: 'Comfirm Password',
                       inputAction: TextInputAction.done,
+                      controller: comfirmPasswordController,
                     ),
                     const SizedBox(
                       height: 25,
                     ),
-                    const RoundedButton(buttonName: 'Register'),
+                    RoundedButton(
+                      buttonName: 'Register',
+                      action: () async {
+                        createAccount(
+                            nameController.text,
+                            emailController.text,
+                            passwordController.text,
+                            comfirmPasswordController.text);
+
+                        print(_createAccountAction);
+                      },
+                    ),
                     const SizedBox(
                       height: 30,
                     ),

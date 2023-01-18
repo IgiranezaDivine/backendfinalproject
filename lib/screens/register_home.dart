@@ -1,14 +1,21 @@
+import 'dart:io';
+
+import 'package:backendfinalproject/screens/constant/utils.dart';
+import 'package:backendfinalproject/screens/mainPage.dart';
+import 'package:backendfinalproject/services/register_home.dart';
 import 'package:flutter/material.dart';
 import 'package:quickalert/quickalert.dart';
 
-class RegisterUser extends StatefulWidget {
-  const RegisterUser({super.key});
+class RegisterHome extends StatefulWidget {
+  const RegisterHome({super.key});
 
   @override
-  State<RegisterUser> createState() => _RegisterUserState();
+  State<RegisterHome> createState() => _RegisterHomeState();
 }
 
-class _RegisterUserState extends State<RegisterUser> {
+class _RegisterHomeState extends State<RegisterHome> {
+  List<File> images = [];
+
   bool isObscurePassword = true;
   void showAlert() {
     QuickAlert.show(
@@ -18,18 +25,34 @@ class _RegisterUserState extends State<RegisterUser> {
         type: QuickAlertType.success);
   }
 
+  void selectImage() async {
+    var res = await pickImages();
+    setState(() {
+      images = res;
+    });
+  }
+
+  final TextEditingController _controller = TextEditingController();
+  Future<Album>? _futureAlbum;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Registration'),
+        title: const Text('Home Registration'),
         centerTitle: true,
+        backgroundColor: Color.fromARGB(255, 52, 87, 120),
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
             color: Colors.white,
           ),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(
+              context,
+              MainPage(),
+            );
+          },
         ),
         actions: [
           IconButton(
@@ -68,43 +91,33 @@ class _RegisterUserState extends State<RegisterUser> {
                             image: NetworkImage(
                                 'https://media.istockphoto.com/id/1446693246/photo/businessman-using-smartphone-to-input-alphabet-in-searching-bar-for-search-engine.jpg?s=612x612&w=is&k=20&c=_AEW6T12l86YnsuokVVSZGwq9AfUPt60FeSCFCxyCkY='))),
                   ),
-                  Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Container(
-                        height: 40,
-                        width: 40,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(width: 4, color: Colors.white),
-                            color: Colors.blue),
-                        child: Icon(
-                          Icons.edit,
-                          color: Colors.white,
-                        ),
-                      ))
+                  GestureDetector(
+                    onTap: selectImage,
+                    child: Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(width: 4, color: Colors.white),
+                              color: Color.fromARGB(255, 28, 66, 98)),
+                          child: Icon(
+                            Icons.edit,
+                            color: Colors.white,
+                          ),
+                        )),
+                  )
                 ]),
               ),
               const SizedBox(
                 height: 20,
               ),
               buildTextField("Names", "Igiraneza Divine", false),
-              buildTextField("Username", "Didi", false),
-              buildTextField("Gender", "Female", false),
-              buildTextField("Last Seen", "on Friday", false),
-              buildTextField("Details", "She is a Student", false),
+              buildTextField("District", "Nyarugenge", false),
               const SizedBox(
                 height: 20,
-              ),
-              const Text('Submitted By'),
-              const SizedBox(
-                height: 30,
-              ),
-              buildTextField("Name", "Uwayo Kevine", false),
-              buildTextField("Email", "uwayokevine@gmail.com", false),
-              buildTextField("phone", "07863456678", false),
-              const SizedBox(
-                height: 30,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -123,7 +136,13 @@ class _RegisterUserState extends State<RegisterUser> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      showAlert();
+                      setState(() {
+                       _futureAlbum = createHome(_controller.text, _controller.text, _controller.text);
+                      });
+                      if (_futureAlbum != null) {
+                        // _loginAction.then((value) =>set value.token);
+                        throw Exception('Fail to Load');
+                      }
                     },
                     child: Text("Save",
                         style: TextStyle(
@@ -131,7 +150,7 @@ class _RegisterUserState extends State<RegisterUser> {
                             letterSpacing: 2,
                             color: Colors.white)),
                     style: ElevatedButton.styleFrom(
-                        primary: Colors.blue,
+                        primary: Color.fromARGB(255, 27, 64, 94),
                         padding: EdgeInsets.symmetric(horizontal: 50),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20))),
@@ -150,6 +169,7 @@ class _RegisterUserState extends State<RegisterUser> {
     return Padding(
       padding: EdgeInsets.only(bottom: 30),
       child: TextField(
+        controller: TextEditingController(),
         obscureText: isPasswordTextField ? isObscurePassword : false,
         decoration: InputDecoration(
             suffixIcon: isPasswordTextField
@@ -164,6 +184,23 @@ class _RegisterUserState extends State<RegisterUser> {
             hintStyle: TextStyle(
                 fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey)),
       ),
+    );
+  }
+
+  FutureBuilder<Album> buildFutureBuilder() {
+    return FutureBuilder<Album>(
+      future: _futureAlbum,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return Text(snapshot.data!.photo);
+          Text(snapshot.data!.name);
+          Text(snapshot.data!.place);
+        } else if (snapshot.hasError) {
+          return Text('${snapshot.error}');
+        }
+
+        return const CircularProgressIndicator();
+      },
     );
   }
 }

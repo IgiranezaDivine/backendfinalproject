@@ -1,6 +1,5 @@
+import 'package:backendfinalproject/services/getHome.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'dart:core';
 
 class HomeScreen extends StatefulWidget {
@@ -11,35 +10,31 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  fetchPhoto() async {
-    var res = await http.get(Uri.parse("http://localhost:6000/api/homeRegister/register"));
-    if (res.statusCode == 200) {
-      var obj = json.decode(res.body);
-      return obj;
-    }
+  late Future<homeContainer> data;
+
+  @override
+  void initState() {
+    super.initState();
+    data = fetchDataHome();
+    print(data);
   }
 
-  // @override
-  // void initState() {
-  //   fetchPhoto();
-  //   super.initState();
-  // }
-
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: FutureBuilder(
-          future: fetchPhoto(),
+          future: fetchDataHome(),
           builder: (context, snapshot) {
-            if (snapshot != null) {
+            if (snapshot == null) {
               return ListView.builder(
                 itemBuilder: (context, index) {
                   return ListTile(
                     leading: CircleAvatar(
-                      backgroundImage: NetworkImage(snapshot.data[index]['image']),
+                      backgroundImage: NetworkImage(snapshot.data!.photo),
                     ),
-                    title: Text(snapshot.data[index]['names']),
-                    subtitle: Text(snapshot.data[index]['place']),
+                    title: Text(snapshot.data!.name),
+                    subtitle: Text(snapshot.data!.place),
                   );
                 },
               );

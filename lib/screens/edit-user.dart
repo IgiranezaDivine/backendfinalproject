@@ -1,3 +1,8 @@
+import 'dart:io';
+
+import 'package:backendfinalproject/screens/constant/utils.dart';
+import 'package:backendfinalproject/screens/mainPage.dart';
+import 'package:backendfinalproject/services/edit_userDetails.dart';
 import 'package:flutter/material.dart';
 import 'package:quickalert/quickalert.dart';
 
@@ -9,6 +14,8 @@ class EditUser extends StatefulWidget {
 }
 
 class _EditUserState extends State<EditUser> {
+List<File> images = [];
+
   bool isObscurePassword = true;
   void showAlert() {
     QuickAlert.show(
@@ -16,20 +23,40 @@ class _EditUserState extends State<EditUser> {
         title: "Success",
         text: "The person is Updated successful",
         type: QuickAlertType.confirm);
+  
   }
+    void selectImage() async {
+    var res = await pickImages();
+    setState(() {
+      images = res;
+    });
+  } 
 
+  
+late Future<Album> _futureAlbum;     
+  @override
+  void initState() {
+    super.initState();
+    _futureAlbum = fettchEditUserDetails();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Edit User'),
+        backgroundColor: Color.fromARGB(255, 52, 87, 120),
         centerTitle: true,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
             color: Colors.white,
           ),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(
+              context,
+              MainPage(),
+            );
+          },
         ),
         actions: [
           IconButton(
@@ -68,21 +95,24 @@ class _EditUserState extends State<EditUser> {
                             image: NetworkImage(
                                 'https://media.istockphoto.com/id/670334428/photo/cropped-hand-of-graphic-designer-using-smartphone-and-laptop.jpg?s=612x612&w=is&k=20&c=tNpKj3mmw9nyPXYptLV7hya0fbE1h8ryOr8NHPqESic='))),
                   ),
-                  Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Container(
-                        height: 40,
-                        width: 40,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(width: 4, color: Colors.white),
-                            color: Colors.blue),
-                        child: Icon(
-                          Icons.edit,
-                          color: Colors.white,
-                        ),
-                      ))
+                  GestureDetector(
+                    onTap: selectImage,
+                    child: Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(width: 4, color: Colors.white),
+                              color:  Color.fromARGB(255, 28, 66, 98)),
+                          child: Icon(
+                            Icons.edit,
+                            color: Colors.white,
+                          ),
+                        )),
+                  )
                 ]),
               ),
               const SizedBox(
@@ -123,7 +153,11 @@ class _EditUserState extends State<EditUser> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      showAlert();
+                        setState(() {
+                        //    _futureAlbum = updateUser(_controller.text);
+                          }
+                          );
+                          
                     },
                     child: Text("Save",
                         style: TextStyle(
@@ -131,7 +165,7 @@ class _EditUserState extends State<EditUser> {
                             letterSpacing: 2,
                             color: Colors.white)),
                     style: ElevatedButton.styleFrom(
-                        primary: Colors.blue,
+                        primary:  Color.fromARGB(255, 28, 66, 98),
                         padding: EdgeInsets.symmetric(horizontal: 50),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20))),
@@ -150,6 +184,7 @@ class _EditUserState extends State<EditUser> {
     return Padding(
       padding: EdgeInsets.only(bottom: 30),
       child: TextField(
+        controller: TextEditingController(),
         obscureText: isPasswordTextField ? isObscurePassword : false,
         decoration: InputDecoration(
             suffixIcon: isPasswordTextField

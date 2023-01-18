@@ -42,6 +42,12 @@ dependencies:
   http: ^0.13.0 
   http_parser: ^4.0.2
   get: ^4.6.5
+  flutter_settings_screens: ^0.2.2+1
+  day_night_switcher: ^0.2.0+1
+  animated_theme_switcher: ^2.0.7
+  shared_preferences: ^2.0.15
+  file_picker: ^5.2.5
+
 
 dev_dependencies:
   flutter_test:

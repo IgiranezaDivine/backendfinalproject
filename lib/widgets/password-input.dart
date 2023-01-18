@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:backendfinalproject/pallete.dart';
+
 class PasswordInput extends StatelessWidget {
   const PasswordInput({
     Key? key,
     required this.icon,
-    required this.hint ,
+    required this.hint,
     this.inputType,
     this.inputAction,
+   required this.controller,
   }) : super(key: key);
 
   final IconData icon;
   final String hint;
- final TextInputType? inputType ;
-final TextInputAction? inputAction;  
+  final TextInputType? inputType;
+  final TextInputAction? inputAction;
+  final TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +31,7 @@ final TextInputAction? inputAction;
         ),
         child: Center(
           child: TextField(
+            controller: controller,
             decoration: InputDecoration(
               border: InputBorder.none,
               prefixIcon: Padding(

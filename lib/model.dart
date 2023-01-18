@@ -2,19 +2,19 @@ class User {
   final String username;
   final String district;
   final String age;
-  final String urlAvatar;
+  final String photo;
 
   const User({
     required this.username,
     required this.district,
     required this.age,
-    required this.urlAvatar,
+    required this.photo,
 
   });
   static User fromJson(json) => User
-  (username: json['username'],
+  (username: json['name'],
    district: json['district'],
    age: json['age'],
-   urlAvatar: json['urlAvatar']
+   photo: json['image']
    );
 }
